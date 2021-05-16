@@ -37,7 +37,6 @@ class ViewTest(TestCase):
                 "uuid": "587a1f5b-d36a-41a3-8bf8-ea0788ebc752"
             }
         ]
-        user = User.objects.get(username="test_user_1")
         collection_obj = Collection.objects.create(title="test_title", description="test_description", user=user)
         self.collection_uuid = collection_obj.uuid
         for movie in movies_data:
