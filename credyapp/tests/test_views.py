@@ -86,7 +86,6 @@ class ViewTest(TestCase):
                                 HTTP_AUTHORIZATION="Bearer " + self.access_token, content_type="application/json")
         self.assertEqual(resp.status_code, 201)
         self.assertTrue(resp.json().get('collection_uuid'))
-        self.collection_uuid = resp.json().get('collection_uuid')
 
     def test_get_collection(self):
         resp = self.client.get(reverse("credyapp:get_put_delete_collection", kwargs={"uuid": self.collection_uuid}),
@@ -94,8 +93,31 @@ class ViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_put_collection(self):
-        resp = self.client.put(reverse("credyapp:get_put_delete_collection", kwargs={"uuid": self.collection_uuid}),
-                               HTTP_AUTHORIZATION="Bearer " + self.access_token)
+        data = {
+            "title": "Put collection",
+            "description": "New collection",
+            "movies": [
+                {
+                    "title": "Morning After",
+                    "description": "The Morning After is a feature film that consists of 8 vignettes that are "
+                                   "inter-cut throughout the film. The 8 vignettes are about when you wake up next to "
+                                   "someone the next morning...",
+                    "genres": "Comedy,Drama",
+                    "uuid": "9a4fcb69-24f6-4cda-8f49-ad66b689f481"
+                },
+                {
+                    "title": "Maa",
+                    "description": "The bliss of a biology teacher’s family life in Delhi is shattered when her "
+                                   "daughter, Arya  is physically assaulted by Jagan and gang. Does Devki Sabarwal "
+                                   "wait for the law to take its course? Or does Devki become Maa Durga and hunt down "
+                                   "the perpetrators of the crime?",
+                    "genres": "Crime,Drama,Thriller",
+                    "uuid": "587a1f0b-d36a-41a3-8bf8-ea0788ebc752"
+                }
+            ]
+        }
+        resp = self.client.put(reverse("credyapp:get_put_delete_collection", kwargs={"uuid": self.collection_uuid}), data,
+                               HTTP_AUTHORIZATION="Bearer " + self.access_token, content_type="application/json")
         self.assertEqual(resp.status_code, 200)
 
     def test_delete_collection(self):
